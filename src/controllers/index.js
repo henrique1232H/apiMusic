@@ -1,9 +1,8 @@
 const sqlConnection = require("../database/sqlite")
 
-
 class Controllers {
     async create(req, res) {
-        const {music,avatar,artist,launch} = req.body;
+        const {music,artist,launch} = req.body;
 
         const database = await sqlConnection();
 
@@ -28,12 +27,9 @@ class Controllers {
 
 
     async showMusic(req, res) {
-        const id = req.params.id
-
         const database = await sqlConnection()
 
-        const allMusic = await database.get("SELECT * FROM MUSIC WHERE id = (?)", [id]);
-
+        const allMusic = await database.all("SELECT * FROM MUSIC");
         res.send(allMusic)
     }
 

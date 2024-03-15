@@ -6,6 +6,6 @@ const ShowMusic = require("../controllers/index");
 
 const Controller = new ShowMusic()
 
-showMusic.get("/:id", Controller.showMusic );
+showMusic.get("/", Controller.showMusic );
 
 module.exports = showMusic
