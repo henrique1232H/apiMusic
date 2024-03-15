@@ -1,0 +1,11 @@
+### API MUSIC
+
+- In this project i want to create a api from music using the HTTPS VERBS
+
+- In this project i use, GET, POST, DELETE and PUT
+
+
+
+#### to run this project:
+- 1ª: install the package.json using command: npm i
+- 2ª: use command npm run dev 
