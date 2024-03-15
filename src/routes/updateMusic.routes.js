@@ -7,6 +7,6 @@ const Connection = require("../controllers");
 const UpdateMusic = new Connection()
 
 
-updateMusic.patch("/:id", UpdateMusic.updateMusic);
+updateMusic.patch("/:type/:id", UpdateMusic.updateMusic);
 
 module.exports = updateMusic

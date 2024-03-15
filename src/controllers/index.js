@@ -54,12 +54,24 @@ class Controllers {
 
 
     async updateMusic(req, res) {
-        const {music} = req.body;
-        const id = req.params.id
+        const change = req.body.change;
+        const {type, id} = req.params;
 
-        console.log(music)
 
-        res.send("alo")
+        const database = await sqlConnection();
+
+        if(type === 'music') {
+          await database.run("UPDATE MUSIC SET music = (?) WHERE id = (?)", [change, id]);
+        }
+
+        if(type === 'artist') {
+            await database.run("UPDATE MUSIC SET artist = (?) WHERE id = (?)", [change, id]);
+          }
+
+
+        res.status(200).send({
+            message: `UPDATE ${change}`
+        })
     }
 }
 
