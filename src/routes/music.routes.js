@@ -6,18 +6,12 @@ const Controllers = require("../controllers");
 
 const controllers = new Controllers();
 
-const middleware = (req,res, next) => {
 
-    console.log("alo")
-
-    next()
-}
-
-routeMusic.delete("/deleteMusic/:id", middleware,controllers.deleteMusic);
-routeMusic.post("/createMusic", middleware ,controllers.create);
-routeMusic.get("/seeMusic", middleware,controllers.showMusic);
-routeMusic.patch("/updateMusic/:type/:id", middleware ,controllers.updateMusic);
-routeMusic.get("/seeMusicByArtist/:id", middleware,controllers.seeMusicByArtist)
+routeMusic.delete("/deleteMusic/:id", controllers.deleteMusic);
+routeMusic.post("/createMusic",  controllers.create);
+routeMusic.get("/seeMusic", controllers.showMusic);
+routeMusic.patch("/updateMusic/:type/:id",  controllers.updateMusic);
+routeMusic.get("/seeMusicByArtist/:id", controllers.seeMusicByArtist)
 
 
 module.exports = routeMusic
