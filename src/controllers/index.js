@@ -2,11 +2,13 @@ const sqlConnection = require("../database/sqlite")
 
 class Controllers {
     async create(req, res) {
-        const {music,artist,launch} = req.body;
+        const {music,artist,launch, feat, primaryType} = req.body;
 
         const database = await sqlConnection();
 
         const checkIfMusicExists = await database.get("SELECT * FROM MUSIC WHERE music = (?)", [music]);
+
+
 
         if(checkIfMusicExists) {
             return res.status(401).send({
@@ -14,12 +16,20 @@ class Controllers {
             })
         }
 
-        database.run("INSERT INTO MUSIC (music, artist, launch) VALUES (?,?,?)", [music,artist,launch])
+        if(primaryType === undefined) {
+            return res.status(401).send({
+                message: "Check primary type"
+            })
+        }
+
+        database.run("INSERT INTO MUSIC (music, artist, launch, feat, primaryType) VALUES (?,?,?, ?, ?)", [music,artist,launch,feat, primaryType])
 
         res.status(201).send({
             artist,
             music,
-            launch
+            launch,
+            feat,
+            primaryType
         })
         
 
@@ -53,6 +63,7 @@ class Controllers {
         const change = req.body.change;
         const {type, id} = req.params;
 
+        
 
         const database = await sqlConnection();
 
@@ -68,6 +79,16 @@ class Controllers {
         res.status(200).send({
             message: `UPDATE ${change}`
         })
+    }
+
+    async seeMusicByArtist(req, res) {
+        const {id} = req.params;
+
+        const database = await sqlConnection();
+
+        const takeMusicByArtist = await database.all("SELECT * FROM MUSIC WHERE artist = (?)", [id]);
+
+        res.send(takeMusicByArtist)
     }
 }
 
