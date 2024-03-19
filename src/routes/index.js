@@ -1,14 +1,8 @@
 const { Router } = require("express");
 const routes = Router()
 
-const createMusic = require("./createMusic.routes");
-const showMusic = require("./getMusic.routes")
-const deleteMusic = require("./deleteMusic.routes")
-const updateMusic = require("./updateMusic.routes")
+const musicRoutes = require("./music.routes");
 
-routes.use("/createMusic", createMusic);
-routes.use("/showArtist", showMusic);
-routes.use("/deleteMusic", deleteMusic);
-routes.use("/updateMusic", updateMusic)
+routes.use("/music", musicRoutes);
 
 module.exports = routes
