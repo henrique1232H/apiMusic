@@ -9,6 +9,11 @@ class Controllers {
         const checkIfMusicExists = await database.get("SELECT * FROM MUSIC WHERE music = (?)", [music]);
 
 
+        if(primaryType === undefined) {
+            return res.status(401).send({
+                message: "Check primary type"
+            })
+        }
 
         if(checkIfMusicExists) {
             return res.status(401).send({
@@ -16,11 +21,6 @@ class Controllers {
             })
         }
 
-        if(primaryType === undefined) {
-            return res.status(401).send({
-                message: "Check primary type"
-            })
-        }
 
         database.run("INSERT INTO MUSIC (music, artist, launch, feat, primaryType) VALUES (?,?,?, ?, ?)", [music,artist,launch,feat, primaryType])
 
@@ -49,6 +49,7 @@ class Controllers {
         const database = await sqlConnection();
 
         const musicChose = await database.get("SELECT * FROM MUSIC WHERE id = (?)",[id]) 
+
         await database.run("DELETE FROM MUSIC WHERE id = (?)", [id]);
 
 
@@ -63,17 +64,19 @@ class Controllers {
         const change = req.body.change;
         const {type, id} = req.params;
 
-        
-
         const database = await sqlConnection();
 
-        if(type === 'music') {
-          await database.run("UPDATE MUSIC SET music = (?) WHERE id = (?)", [change, id]);
-        }
 
-        if(type === 'artist') {
-            await database.run("UPDATE MUSIC SET artist = (?) WHERE id = (?)", [change, id]);
-          }
+        const checkIfMusicExistInDatabase = await database.get("SELECT * FROM MUSIC WHERE id = (?)", [id]);
+
+        if(checkIfMusicExistInDatabase === undefined) {
+            return res.status(401).send({
+                message: "Don't exist this music in database"
+            })
+        }
+        
+
+        await database.run(`UPDATE MUSIC SET ${type} = (?) WHERE id = (?)`, [change, id])
 
 
         res.status(200).send({
@@ -81,14 +84,15 @@ class Controllers {
         })
     }
 
-    async seeMusicByArtist(req, res) {
-        const {id} = req.params;
+    async searchMusic(req, res) {
+        const {type, id} = req.params;
 
         const database = await sqlConnection();
 
-        const takeMusicByArtist = await database.all("SELECT * FROM MUSIC WHERE artist = (?)", [id]);
+        const takeMusic = await database.all(`SELECT * FROM MUSIC WHERE ${type} = (?)`, [id])
 
-        res.send(takeMusicByArtist)
+
+        res.send(takeMusic)
     }
 }
 

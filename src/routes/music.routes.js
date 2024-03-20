@@ -11,7 +11,7 @@ routeMusic.delete("/deleteMusic/:id", controllers.deleteMusic);
 routeMusic.post("/createMusic",  controllers.create);
 routeMusic.get("/seeMusic", controllers.showMusic);
 routeMusic.patch("/updateMusic/:type/:id",  controllers.updateMusic);
-routeMusic.get("/seeMusicByArtist/:id", controllers.seeMusicByArtist)
+routeMusic.get("/searchMusic/:type/:id", controllers.searchMusic)
 
 
 module.exports = routeMusic
